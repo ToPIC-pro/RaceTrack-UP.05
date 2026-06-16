@@ -1,0 +1,22 @@
+[
+  {
+    "id": "track1",
+    "name": "Трасса 1",
+    "file": "tracks/track1.json"
+  },
+  {
+    "id": "track2",
+    "name": "Трасса 2",
+    "file": "tracks/track2.json"
+  },
+  {
+    "id": "track3",
+    "name": "Трасса 3",
+    "file": "tracks/track3.json"
+  },
+  {
+    "id": "track4",
+    "name": "Трасса 4",
+    "file": "tracks/track4.json"
+  }
+]
