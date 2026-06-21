@@ -449,11 +449,6 @@ def apply_normal_move(car, gx, gy):
 
 
 def apply_move(track, car, gx, gy):
-    """
-    Применяет ход к машине, изменяя её состояние.
-    Возвращает TurnResult.
-    """
-
     collision, stop_x, stop_y, hit_axis = check_collision_path_info(
         track.walls,
         car.x,
@@ -475,34 +470,20 @@ def apply_move(track, car, gx, gy):
     )
 
     wall_t = None
-
     if collision:
         dx = gx - car.x
         dy = gy - car.y
-
         total_len_sq = dx * dx + dy * dy
-
         if total_len_sq > 0:
             stop_dx = stop_x - car.x
             stop_dy = stop_y - car.y
-
-            wall_t = (
-                (stop_dx * dx + stop_dy * dy)
-                / total_len_sq
-            )
-
-    # =====================================================
-    # Финиш раньше столкновения -> победа
-    # =====================================================
+            wall_t = (stop_dx * dx + stop_dy * dy) / total_len_sq
 
     if finish_t is not None:
         if wall_t is None or finish_t <= wall_t + EPS:
-
             apply_normal_move(car, gx, gy)
-
             if checkpoint_now:
                 car.checkpoint_index += 1
-
             return TurnResult(
                 collision=False,
                 checkpoint_now=checkpoint_now,
@@ -514,16 +495,15 @@ def apply_move(track, car, gx, gy):
                 hit_axis=None
             )
 
-    # =====================================================
-    # Иначе обычная логика столкновения
-    # =====================================================
-
     if collision:
         apply_collision(car, stop_x, stop_y, hit_axis)
 
+        if checkpoint_now:
+            car.checkpoint_index += 1
+
         return TurnResult(
             collision=True,
-            checkpoint_now=False,
+            checkpoint_now=checkpoint_now,
             finish_now=False,
             final_x=stop_x,
             final_y=stop_y,
@@ -533,7 +513,6 @@ def apply_move(track, car, gx, gy):
         )
 
     apply_normal_move(car, gx, gy)
-
     if checkpoint_now:
         car.checkpoint_index += 1
 
